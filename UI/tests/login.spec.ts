@@ -1,12 +1,9 @@
 import { test, expect } from '@playwright/test';
 import { LoginPage } from '../pages/LoginPage';
 import { MyAccountPage } from '../pages/MyAccountPage';
+import { env } from '../utils/env';
 
-const { USER_EMAIL, USER_PASSWORD, USER_NAME } = process.env;
-
-if (!USER_EMAIL || !USER_PASSWORD || !USER_NAME) {
-  throw new Error('Missing test credentials. Check your .env file.');
-}
+const { userEmail: USER_EMAIL, userPassword: USER_PASSWORD, userName: USER_NAME } = env;
 
 test.describe('US-0002 – Login', () => {
   let loginPage: LoginPage;

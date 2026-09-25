@@ -68,9 +68,13 @@ Feature: Product catalog
 ```
 
 ## Open Questions
-- How many products should be displayed per page?
 - Should the search also match product descriptions, or only names?
 - What should happen when a specific variation (size + color) is out of stock?
 
 ## Exploratory Testing Notes
 - **i18n inconsistency:** the UI mixes Portuguese and English labels (e.g., "Carrinho" / "Update Cart", "Detalhes de faturamento" / "Your order", "Comprar" / "Search").
+- **Pagination:** the catalog displays 9 products per page.
+- **Single-result search:** when a search matches exactly one product, the customer is redirected straight to the product page.
+- **Add to cart without variations:** the "Comprar" button only looks disabled; clicking it shows a native browser alert ("Selecione uma das opções do produto antes de adicioná-lo ao carrinho.").
+- **i18n issue:** the sorting dropdown's accessible label is "Pedido da loja", a mistranslation of "Shop order".
+- **Accessibility (WCAG 1.1.1):** product images in the catalog have no alternative text, so screen readers cannot describe them.

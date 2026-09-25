@@ -38,4 +38,14 @@ export class ProductPage {
     await this.quantityInput.fill(String(quantity));
     await this.addToCartButton.click();
   }
+    // Clicks "Comprar" and returns the browser alert message (empty if no alert appears)
+  async clickAddToCartAndGetAlert(): Promise<string> {
+    let alertMessage = '';
+    this.page.once('dialog', async (dialog) => {
+      alertMessage = dialog.message();
+      await dialog.accept();
+    });
+    await this.addToCartButton.click();
+    return alertMessage;
+  }
 }

@@ -16,6 +16,9 @@ BDD acceptance criteria, UI/API/Mobile automation, CI and performance testing.
 
 ## Documentation
 - [Test Strategy](docs/test-strategy.md)
+- [US-0001 – Add Item to Cart](docs/user-stories/US-0001-add-to-cart.md)
+- [US-0002 – Login](docs/user-stories/US-0002-login.md)
+- [US-0003 – Coupons API](docs/user-stories/US-0003-coupons-api.md)
 
 ## Tech Stack
 _In progress_

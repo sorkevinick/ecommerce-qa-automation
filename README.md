@@ -12,16 +12,31 @@ BDD acceptance criteria, UI/API/Mobile automation, CI and performance testing.
 | `API/` | API tests with Supertest + contract validation |
 | `Mobile/` | Android app automation |
 | `performance/` | k6 load tests |
-| `docs/` | Test strategy, test cases and final report |
+| `docs/` | Test strategy, user stories, test cases and final report |
 
 ## Documentation
 - [Test Strategy](docs/test-strategy.md)
+
+### User Stories
 - [US-0001 – Add Item to Cart](docs/user-stories/US-0001-add-to-cart.md)
 - [US-0002 – Login](docs/user-stories/US-0002-login.md)
 - [US-0003 – Coupons API](docs/user-stories/US-0003-coupons-api.md)
+- [US-0004 – Product Catalog](docs/user-stories/US-0004-product-catalog.md)
+- [US-0005 – My Account Dashboard](docs/user-stories/US-0005-my-account-dashboard.md)
+- [US-0006 – My Orders](docs/user-stories/US-0006-my-orders.md)
+- [US-0007 – Addresses](docs/user-stories/US-0007-addresses.md)
+- [US-0008 – Account Details](docs/user-stories/US-0008-account-details.md)
 
 ## Tech Stack
-_In progress_
+| Layer | Tools |
+|---|---|
+| UI | Playwright + TypeScript |
+| API | Supertest + Jest |
+| Mobile | WebdriverIO + Appium (Android) |
+| Performance | k6 |
+| CI | GitHub Actions |
+| Reports | Allure |
+| Environment | Docker |
 
 ## How to Run
 _In progress_

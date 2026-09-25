@@ -39,6 +39,10 @@ BDD acceptance criteria, UI/API/Mobile automation, CI and performance testing.
 - [US-0007 – Addresses](docs/test-cases/TC-US-0007-addresses.md)
 - [US-0008 – Account Details](docs/test-cases/TC-US-0008-account-details.md)
 
+### Bug Reports
+- [BUG-001 – Quantity limit not enforced](docs/bugs/BUG-001-quantity-limit-not-enforced.md)
+- [BUG-002 – Coupon not applied](docs/bugs/BUG-002-coupon-not-applied.md)
+
 ## Tech Stack
 | Layer | Tools |
 |---|---|

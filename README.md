@@ -27,6 +27,11 @@ BDD acceptance criteria, UI/API/Mobile automation, CI and performance testing.
 - [US-0007 – Addresses](docs/user-stories/US-0007-addresses.md)
 - [US-0008 – Account Details](docs/user-stories/US-0008-account-details.md)
 
+### Test Cases
+- [US-0001 – Add Item to Cart](docs/test-cases/TC-US-0001-add-to-cart.md)
+- [US-0002 – Login](docs/test-cases/TC-US-0002-login.md)
+- [US-0003 – Coupons API](docs/test-cases/TC-US-0003-coupons-api.md)
+
 ## Tech Stack
 | Layer | Tools |
 |---|---|

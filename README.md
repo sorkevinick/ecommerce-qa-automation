@@ -14,6 +14,9 @@ BDD acceptance criteria, UI/API/Mobile automation, CI and performance testing.
 | `performance/` | k6 load tests |
 | `docs/` | Test strategy, test cases and final report |
 
+## Documentation
+- [Test Strategy](docs/test-strategy.md)
+
 ## Tech Stack
 _In progress_
 

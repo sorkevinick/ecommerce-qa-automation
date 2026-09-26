@@ -75,5 +75,9 @@ Feature: Coupons API
 ```
 
 ## Open Questions
-- WooCommerce natively requires only `code`. Will the API enforce `amount`, `discount_type` and `description` as required fields, as stated in the business rules? *To be confirmed during testing.*
-- Which status code is expected for a non-existent coupon ID: 404 or 400?
+- Which status code is expected for a non-existent coupon ID? *Answered by exploration: the API returns `404`.*
+
+## Exploratory Testing Notes
+- **Required fields not enforced:** only `code` is validated; `amount`, `discount_type` and `description` are accepted when missing (see BUG-003).
+- **Code normalization:** coupon codes are stored in lowercase (e.g., `Ganhe10` is saved as `ganhe10`).
+- **Error contract:** every error response follows the same structure: `code`, `message` and `data.status`.

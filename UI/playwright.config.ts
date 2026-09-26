@@ -10,8 +10,11 @@ export default defineConfig({
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
+  // The local store runs under x86 emulation (Docker on Apple Silicon) and slows down
+  // under heavy parallel load, so the number of simultaneous tests is limited.
+  workers: process.env.CI ? 1 : 2,
   reporter: 'html',
+  expect: { timeout: 10_000 },
 
   use: {
     baseURL: process.env.BASE_URL || 'http://localhost',

@@ -1,4 +1,4 @@
-import { type Page, type Locator } from '@playwright/test';
+import { type Page, type Locator, expect } from '@playwright/test';
 
 export class ProductPage {
   readonly page: Page;
@@ -17,6 +17,9 @@ export class ProductPage {
 
   async goto(slug: string) {
     await this.page.goto(`/product/${slug}/`);
+    // The size and color buttons only respond after the page scripts finish loading.
+    // Clicking earlier can silently lose the selection (seen in WebKit).
+    await this.page.waitForLoadState('networkidle');
   }
 
   // Matches "XS XS" for size XS, but not "XS XS" for size S
@@ -26,10 +29,12 @@ export class ProductPage {
 
   async selectSize(size: string) {
     await this.variation(size).click();
+    await expect(this.variation(size)).toBeChecked();
   }
 
   async selectColor(color: string) {
     await this.variation(color).click();
+    await expect(this.variation(color)).toBeChecked();
   }
 
   async addToCart(size: string, color: string, quantity = 1) {
@@ -37,8 +42,12 @@ export class ProductPage {
     await this.selectColor(color);
     await this.quantityInput.fill(String(quantity));
     await this.addToCartButton.click();
+    // Wait for the store to confirm the result before moving on.
+    // Navigating away too early cancels the request and the product is never added.
+    await expect(this.successMessage.or(this.errorMessage)).toBeVisible();
   }
-    // Clicks "Comprar" and returns the browser alert message (empty if no alert appears)
+
+  // Clicks "Comprar" and returns the browser alert message (empty if no alert appears)
   async clickAddToCartAndGetAlert(): Promise<string> {
     let alertMessage = '';
     this.page.once('dialog', async (dialog) => {

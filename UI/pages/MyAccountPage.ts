@@ -22,4 +22,8 @@ export class MyAccountPage {
   async logout() {
     await this.logoutLink.click();
   }
+
+  async openSection(name: string) {
+    await this.navigation.getByRole('link', { name }).click();
+  }
 }

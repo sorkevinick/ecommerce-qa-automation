@@ -3,6 +3,7 @@ import { LoginPage } from '../pages/LoginPage';
 import { MyAccountPage } from '../pages/MyAccountPage';
 import { AUTH_FILE } from '../utils/auth';
 import { env } from '../utils/env';
+import { TEST_PASSWORD } from '../data/customers';
 
 test.describe('US-0005 – My Account dashboard', () => {
   test.describe('with a saved session', () => {
@@ -39,7 +40,7 @@ test.describe('US-0005 – My Account dashboard', () => {
       const uniqueEmail = `qa.${Date.now()}@ebac.com`;
 
       await loginPage.goto();
-      await loginPage.register(uniqueEmail, 'Ebac#QA-2026-strong');
+      await loginPage.register(uniqueEmail, TEST_PASSWORD);
 
       await expect(myAccountPage.navigation).toBeVisible();
     });

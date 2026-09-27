@@ -20,6 +20,7 @@ VARIATION_ID=$(curl -sf -u "$AUTH" "$API/products/$PRODUCT_ID/variations?per_pag
 
 jq -n --argjson customer "$CUSTOMER_ID" --argjson product "$PRODUCT_ID" --argjson variation "$VARIATION_ID" \
   '{customer_id: $customer, status: "processing",
+    payment_method: "cod", payment_method_title: "Pagamento na entrega",
     line_items: [{product_id: $product, variation_id: $variation, quantity: 1}]}' |
 curl -sf -u "$AUTH" -X POST "$API/orders" -H 'Content-Type: application/json' -d @- > /dev/null
 echo "Order created."

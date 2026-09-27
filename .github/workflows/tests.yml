@@ -1,0 +1,92 @@
+name: Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  api:
+    name: API tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Start EBAC store
+        run: bash .github/scripts/start-store.sh
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: API/package-lock.json
+
+      - name: Install dependencies
+        working-directory: API
+        run: npm ci
+
+      - name: Run API tests
+        working-directory: API
+        env:
+          BASE_URL: http://localhost/wp-json/wc/v3
+          API_USER: ${{ secrets.API_USER }}
+          API_PASSWORD: ${{ secrets.API_PASSWORD }}
+        run: npm test
+
+      - name: Upload API report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: api-report
+          path: API/reports/
+
+  ui:
+    name: UI tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      BASE_URL: http://localhost
+      API_USER: ${{ secrets.API_USER }}
+      API_PASSWORD: ${{ secrets.API_PASSWORD }}
+      USER_EMAIL: ${{ secrets.USER_EMAIL }}
+      USER_PASSWORD: ${{ secrets.USER_PASSWORD }}
+      USER_NAME: ${{ secrets.USER_NAME }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Start EBAC store
+        run: bash .github/scripts/start-store.sh
+
+      - name: Seed test data
+        run: bash .github/scripts/seed-test-data.sh
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: UI/package-lock.json
+
+      - name: Install dependencies
+        working-directory: UI
+        run: npm ci
+
+      - name: Type check
+        working-directory: UI
+        run: npx tsc
+
+      - name: Install Playwright browsers
+        working-directory: UI
+        run: npx playwright install --with-deps
+
+      - name: Run UI tests
+        working-directory: UI
+        run: npx playwright test
+
+      - name: Upload Playwright report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: playwright-report
+          path: UI/playwright-report/

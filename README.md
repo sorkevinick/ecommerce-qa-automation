@@ -47,6 +47,9 @@ BDD acceptance criteria, UI/API/Mobile automation, CI and performance testing.
 - [BUG-002 – Coupon not applied](docs/bugs/BUG-002-coupon-not-applied.md)
 - [BUG-003 – Coupons API does not validate required fields](docs/bugs/BUG-003-coupon-required-fields-not-validated.md)
 
+### Performance
+- [Performance Test Report](docs/performance/performance-test-report.md)
+
 ## Tech Stack
 | Layer | Tools |
 |---|---|
@@ -118,6 +121,19 @@ npm run report
 
 > The app connects to the online EBAC store, which is shared by other users. Tests rely only on stable data (a known product and search behavior), never on list order or stock levels.
 
+### 5. Run the performance tests (k6)
+
+**Additional prerequisite:** [k6](https://k6.io/) (`brew install k6`).
+
+```bash
+cd performance
+export PERF_PASSWORD='the test users password'
+K6_WEB_DASHBOARD=true K6_WEB_DASHBOARD_EXPORT=reports/login-report.html k6 run tests/login.test.js
+K6_WEB_DASHBOARD=true K6_WEB_DASHBOARD_EXPORT=reports/catalog-report.html k6 run tests/catalog.test.js
+```
+
+> Run performance tests only against the local store, never against the shared online environment.
+
 **Useful commands**
 
 | Command | Purpose |
@@ -148,3 +164,4 @@ Reports are published as workflow artifacts. Credentials come from GitHub Secret
 - **Flaky test prevention:** every action waits for the page to confirm its result (e.g., add-to-cart confirmation, filled values, selected variations) instead of using fixed timeouts. Stability was validated with `--repeat-each`.
 - **Tests that can fail:** a false positive in the mobile search test (the product name was matched in the search field itself) was fixed and validated by forcing the test to fail with a non-existent product.
 - **Reproducible test data:** CI starts from a fresh store every run, and a seeding script creates the test customer and a realistic order through the API, so no test depends on data created by hand.
+- **Performance with explicit acceptance criteria:** k6 thresholds (error rate, p95 response time, functional checks) make each load test pass or fail automatically, and every response is functionally verified, not just checked for status 200.

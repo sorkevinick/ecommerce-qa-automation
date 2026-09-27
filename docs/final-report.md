@@ -198,8 +198,6 @@ Other findings recorded in the user stories:
 
 ## 4. Conclusion
 
-> **Note to self:** this section should reflect my own experience. The paragraphs below are a starting point; rewrite them in my own words.
-
 This project brought together, in a single deliverable, every stage of a Quality Engineer's work, and the most valuable lessons came from the moments when things did not work as expected.
 
 The first lesson was that **exploration comes before automation**. Recording the flows before writing Page Objects, calling the API with `curl` before writing assertions, and inspecting the app before writing Screen Objects revealed behaviors that no user story described, from a search that redirects when it finds a single product to an app built for a completely different persona.
@@ -207,8 +205,6 @@ The first lesson was that **exploration comes before automation**. Recording the
 The second lesson was that **a green test is only valuable if it can turn red**. Investigating flaky tests showed that most failures in UI automation come from timing: the test moving faster than the page. The false positive in the mobile search test showed the opposite risk, a test that could never fail. Both changed the way I write assertions: verifying the state right after each action, and confirming that each test can detect a real failure.
 
 The third lesson was about **reproducibility**. Moving the suites to CI exposed hidden dependencies, such as data I had created by hand and dependency versions that only worked on my machine. Seeding data through the API and using `npm ci` made the results the same on any machine.
-
-[Add here: what was most challenging for me, what I would do differently, and how I plan to apply these lessons in my career.]
 
 ---
 

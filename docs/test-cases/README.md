@@ -12,7 +12,8 @@
 | [US-0006 – My Orders](TC-US-0006-my-orders.md) | 4 | 2 | 2 | Playwright |
 | [US-0007 – Addresses](TC-US-0007-addresses.md) | 5 | 2 | 3 | Playwright |
 | [US-0008 – Account Details](TC-US-0008-account-details.md) | 6 | 3 | 3 | Playwright |
-| **Total** | **46** | **30** | **16** | |
+| [US-0009 – Product Catalog (App)](TC-US-0009-product-catalog-app.md) | 5 | 4 | 1 | WebdriverIO + Appium |
+| **Total** | **51** | **34** | **17** | |
 
 ## Automation Criteria
 A test case is automated when it is **critical**, **repeatable** and **stable**.

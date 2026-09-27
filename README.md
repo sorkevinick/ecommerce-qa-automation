@@ -27,6 +27,7 @@ BDD acceptance criteria, UI/API/Mobile automation, CI and performance testing.
 - [US-0006 – My Orders](docs/user-stories/US-0006-my-orders.md)
 - [US-0007 – Addresses](docs/user-stories/US-0007-addresses.md)
 - [US-0008 – Account Details](docs/user-stories/US-0008-account-details.md)
+- [US-0009 – Product Catalog (Store Manager App)](docs/user-stories/US-0009-product-catalog-app.md)
 
 ### Test Cases
 - [Coverage Summary](docs/test-cases/README.md)
@@ -38,6 +39,7 @@ BDD acceptance criteria, UI/API/Mobile automation, CI and performance testing.
 - [US-0006 – My Orders](docs/test-cases/TC-US-0006-my-orders.md)
 - [US-0007 – Addresses](docs/test-cases/TC-US-0007-addresses.md)
 - [US-0008 – Account Details](docs/test-cases/TC-US-0008-account-details.md)
+- [US-0009 – Product Catalog (Store Manager App)](docs/test-cases/TC-US-0009-product-catalog-app.md)
 
 ### Bug Reports
 - [BUG-001 – Quantity limit not enforced](docs/bugs/BUG-001-quantity-limit-not-enforced.md)
@@ -89,7 +91,31 @@ npm install
 cp .env.example .env    # then fill in the admin API credentials
 npm test
 open reports/api-report.html
+
 ```
+
+### 4. Run the Mobile tests (Android)
+
+**Additional prerequisites:** Java 17, Android Studio with an arm64/x86_64 emulator, and Appium 2 with the UiAutomator2 driver.
+
+```bash
+npm install -g appium
+appium driver install uiautomator2
+```
+
+1. Download the app from the [EBAC repository](https://github.com/EBAC-QE/testes-mobile-ebac-shop/tree/main/app/android) and save it as `Mobile/app/loja-ebac.apk`.
+2. Start the Android emulator.
+3. Run:
+
+```bash
+cd Mobile
+npm install
+cp .env.example .env    # then fill in the store manager credentials
+npm test
+npm run report
+```
+
+> The app connects to the online EBAC store, which is shared by other users. Tests rely only on stable data (a known product and search behavior), never on list order or stock levels.
 
 **Useful commands**
 
@@ -106,3 +132,4 @@ open reports/api-report.html
 - **Session reuse:** login runs once (`storageState`) and is shared only by tests that need it. Logout and purchase tests use their own sessions to stay isolated.
 - **Known bugs tracked in code:** tests for known defects are marked with `test.fail()` and linked to their bug reports, so the suite stays green without hiding them.
 - **Flaky test prevention:** every action waits for the page to confirm its result (e.g., add-to-cart confirmation, filled values, selected variations) instead of using fixed timeouts. Stability was validated with `--repeat-each`.
+- **Tests that can fail:** a false positive in the mobile search test (the product name was matched in the search field itself) was fixed and validated by forcing the test to fail with a non-existent product.

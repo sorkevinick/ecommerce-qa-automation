@@ -1,4 +1,5 @@
 # EBAC Shop – QA Engineering Project
+[![Tests](https://github.com/sorkevinick/ecommerce-qa-automation/actions/workflows/tests.yml/badge.svg)](https://github.com/sorkevinick/ecommerce-qa-automation/actions/workflows/tests.yml)
 
 End-to-end quality strategy for the EBAC Shop e-commerce: test planning,
 BDD acceptance criteria, UI/API/Mobile automation, CI and performance testing.
@@ -125,6 +126,19 @@ npm run report
 | `npx playwright test --ui` | Interactive mode with step-by-step debugging |
 | `npx playwright test --repeat-each=5` | Repeat tests to detect flakiness |
 
+## Continuous Integration
+
+Every push and pull request runs the test suites on GitHub Actions ([workflow](.github/workflows/tests.yml)):
+
+| Job | What it does |
+|---|---|
+| **API tests** | Starts the store in Docker and runs the Supertest suite |
+| **UI tests** | Starts the store, seeds test data through the WooCommerce API, type-checks the project and runs Playwright on Chromium, Firefox and WebKit |
+
+Reports are published as workflow artifacts. Credentials come from GitHub Secrets.
+
+**Mobile tests run locally only:** Android emulators are slow and unreliable in CI, and the app depends on the shared online store, whose data changes independently of this project.
+
 ## Key Engineering Decisions
 
 - **Page Object Model:** each page is a class that holds its locators and actions, so UI changes are fixed in one place.
@@ -133,3 +147,4 @@ npm run report
 - **Known bugs tracked in code:** tests for known defects are marked with `test.fail()` and linked to their bug reports, so the suite stays green without hiding them.
 - **Flaky test prevention:** every action waits for the page to confirm its result (e.g., add-to-cart confirmation, filled values, selected variations) instead of using fixed timeouts. Stability was validated with `--repeat-each`.
 - **Tests that can fail:** a false positive in the mobile search test (the product name was matched in the search field itself) was fixed and validated by forcing the test to fail with a non-existent product.
+- **Reproducible test data:** CI starts from a fresh store every run, and a seeding script creates the test customer and a realistic order through the API, so no test depends on data created by hand.

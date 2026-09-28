@@ -166,3 +166,4 @@ Reports are published as workflow artifacts. Credentials come from GitHub Secret
 - **Tests that can fail:** a false positive in the mobile search test (the product name was matched in the search field itself) was fixed and validated by forcing the test to fail with a non-existent product.
 - **Reproducible test data:** CI starts from a fresh store every run, and a seeding script creates the test customer and a realistic order through the API, so no test depends on data created by hand.
 - **Performance with explicit acceptance criteria:** k6 thresholds (error rate, p95 response time, functional checks) make each load test pass or fail automatically, and every response is functionally verified, not just checked for status 200.
+- **AI-assisted test development:** TC-004-04 was planned with Playwright Test Agents and implemented with Claude Code, with every AI-generated change reviewed by a human and validated by forcing the tests to fail.

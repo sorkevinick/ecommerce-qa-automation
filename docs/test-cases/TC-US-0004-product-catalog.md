@@ -5,9 +5,10 @@
 | TC-004-01 | Products are displayed with name, image and price | Happy path | Equivalence Partitioning | ✅ UI · ✅ Mobile |
 | TC-004-02 | Search for an existing product | Happy path | Equivalence Partitioning | ✅ UI · ✅ Mobile |
 | TC-004-03 | Search with no results | Negative | Error Guessing | ✅ UI |
-| TC-004-04 | Search within a category | Alternative | Equivalence Partitioning | ❌ Manual |
+| TC-004-04 | Search within a category | Alternative | Equivalence Partitioning | ✅ UI |
 | TC-004-05 | Sort products by price | Happy path | Equivalence Partitioning | ✅ UI |
 | TC-004-06 | Add to cart requires size and color | Negative | Decision Table | ✅ UI |
+| TC-004-07 | Search within a category with no matches | Negative | Equivalence Partitioning | ✅ UI |
 
 ---
 
@@ -34,14 +35,22 @@
 - **Expected result:** A message informs that no products were found.
 
 ### TC-004-04 – Search within a category
-- **Type:** Alternative · **Technique:** Equivalence Partitioning · **Priority:** Medium · **Automation:** ❌ Manual
+- **Type:** Alternative · **Technique:** Equivalence Partitioning · **Priority:** Medium · **Automation:** ✅ UI (Playwright)
 - **Test data:** Category `Hoodies & Sweatshirts`, term `Hoodie`
 - **Steps:**
   1. Select the category in the "Selecione uma categoria" dropdown.
   2. Type the search term.
   3. Click "Search".
-- **Expected result:** All results belong to the selected category.
-- **Why manual:** checking each result's category requires opening every product page, which makes automation slow for little gain.
+- **Expected result:** All results belong to the selected category. Verified by asserting the `product_cat-<slug>` CSS class on every result card, plus the "Category:" link on the first result's product page.
+
+### TC-004-07 – Search within a category with no matches
+- **Type:** Negative · **Technique:** Equivalence Partitioning · **Priority:** Medium · **Automation:** ✅ UI (Playwright)
+- **Test data:** Category `Bras & Tanks`, term `Hoodie`
+- **Steps:**
+  1. Select the category in the "Selecione uma categoria" dropdown.
+  2. Type the search term.
+  3. Click "Search".
+- **Expected result:** No results are shown and the message "Nenhum produto foi encontrado para a sua seleção." is displayed. A store-wide sanity check confirms the term itself returns results outside the selected category, proving the empty result is due to the category filter and not a broken search term.
 
 ### TC-004-05 – Sort products by price
 - **Type:** Happy path · **Technique:** Equivalence Partitioning · **Priority:** Medium · **Automation:** ✅ UI (Playwright, data-driven)

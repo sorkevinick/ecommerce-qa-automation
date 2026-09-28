@@ -6,6 +6,7 @@ export class ProductPage {
   readonly addToCartButton: Locator;
   readonly successMessage: Locator;
   readonly errorMessage: Locator;
+  readonly categoryLink: Locator;
 
   constructor(page: Page) {
     this.page = page;
@@ -13,6 +14,7 @@ export class ProductPage {
     this.addToCartButton = page.getByRole('button', { name: 'Comprar' });
     this.successMessage = page.locator('.woocommerce-message');
     this.errorMessage = page.locator('.woocommerce-error');
+    this.categoryLink = page.locator('.posted_in').getByRole('link');
   }
 
   async goto(slug: string) {

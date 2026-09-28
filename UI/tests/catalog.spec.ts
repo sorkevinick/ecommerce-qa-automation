@@ -2,6 +2,7 @@ import { test, expect } from '@playwright/test';
 import { CatalogPage } from '../pages/CatalogPage';
 import { ProductPage } from '../pages/ProductPage';
 import { products } from '../data/products';
+import { categories } from '../data/categories';
 
 const VARIATION_ALERT =
   'Selecione uma das opções do produto antes de adicioná-lo ao carrinho.';
@@ -56,6 +57,52 @@ test.describe('US-0004 – Product catalog', () => {
       expect(prices).toEqual(expected);
     });
   }
+
+  test('TC-004-04 – should return only products from the selected category when searching within it', async ({ page }) => {
+    const category = categories.hoodiesAndSweatshirts;
+
+    await catalogPage.searchInCategory(category.name, 'Hoodie');
+
+    // Placed immediately after the search so a wrong dropdown option fails loudly here.
+    await expect(page).toHaveURL(new RegExp(`product_cat=${category.slug}`));
+    await expect(
+      page.getByRole('heading', { name: 'Resultados da pesquisa por: “Hoodie”', level: 1 }),
+    ).toBeVisible();
+
+    await expect(catalogPage.productCards.first()).toBeVisible();
+
+    const categoryClassPattern = new RegExp(
+      `(^|\\s)${catalogPage.productCardCategoryClass(category.slug)}(\\s|$)`,
+    );
+    for (const card of await catalogPage.productCards.all()) {
+      await expect(card).toHaveClass(categoryClassPattern);
+    }
+
+    await catalogPage.openFirstResult();
+    const productPage = new ProductPage(page);
+    await expect(productPage.categoryLink).toHaveText(category.name);
+  });
+
+  test('TC-004-07 – should show no results when the search term has no matches in the selected category', async ({ page }) => {
+    const category = categories.brasAndTanks;
+
+    await catalogPage.searchInCategory(category.name, 'Hoodie');
+
+    await expect(page).toHaveURL(new RegExp(`product_cat=${category.slug}`));
+    await expect(catalogPage.productCards).toHaveCount(0);
+    await expect(catalogPage.noResultsMessage).toBeVisible();
+
+    // Sanity check: the term itself is valid store-wide, so the zero-result case above is
+    // due to the category filter, not a broken/mistyped search term.
+    await catalogPage.goto();
+    await catalogPage.search('Hoodie');
+
+    await expect(page).toHaveURL(/s=Hoodie/);
+    // The dropdown's hidden field is still submitted with an empty value ("product_cat=");
+    // this asserts no category value is applied, not that the param key is absent.
+    await expect(page).not.toHaveURL(/product_cat=[^&]/);
+    await expect(catalogPage.productCards.first()).toBeVisible();
+  });
 });
 
 test.describe('US-0004 – Variation selection (decision table)', () => {
